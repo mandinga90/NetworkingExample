@@ -7,8 +7,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +21,6 @@ public class MainActivity extends Activity implements Callback<GithubUser> {
         setContentView(R.layout.activity_main);
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GithubAPI.ENDPOINT)
@@ -33,44 +30,18 @@ public class MainActivity extends Activity implements Callback<GithubUser> {
 
         // prepare call in Retrofit 2.0
 
-        Call<GithubUser> callUser = githubUserAPI.getUser("vogella");
+        Call<GithubUser> callUser = githubUserAPI.getUser("mandinga90");
         //asynchronous call
         callUser.enqueue(this);
 
     }
-
-
-    Callback repos = new Callback<List<GithubRepo>>(){
-
-        @Override
-        public void onResponse(Call<List<GithubRepo>> call, Response<List<GithubRepo>> response) {
-            if (response.isSuccessful()) {
-                List<GithubRepo> repos = response.body();
-                StringBuilder builder = new StringBuilder();
-                for (GithubRepo repo: repos) {
-                    builder.append(repo.name + " " + repo.toString());
-                }
-                Toast.makeText(MainActivity.this, builder.toString(), Toast.LENGTH_SHORT).show();
-
-            } else
-            {
-                Toast.makeText(MainActivity.this, "Error code " + response.code(), Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        @Override
-        public void onFailure(Call<List<GithubRepo>> call, Throwable t) {
-            Toast.makeText(MainActivity.this, "Did not work " +  t.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @Override
     public void onResponse(Call<GithubUser> call, Response<GithubUser> response) {
         int code = response.code();
         if (code == 200) {
             GithubUser user = response.body();
-            Toast.makeText(this, "Got the user: " + user.email, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Got the user: " + user.name, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Did not work: " + String.valueOf(code), Toast.LENGTH_LONG).show();
         }
