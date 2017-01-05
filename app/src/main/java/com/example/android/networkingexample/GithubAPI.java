@@ -8,11 +8,11 @@ import retrofit2.http.Path;
  * Created by Manuel on 03.01.2017.
  */
 
-public interface GithubAPI {
+public interface GitHubAPI {
 
     String ENDPOINT = "https://api.github.com";
 
     @GET("/users/{user}")
-    Call<GithubUser> getUser(@Path("user") String user);
+    Call<GitHubUser> getUser(@Path("user") String user);
 
 }
